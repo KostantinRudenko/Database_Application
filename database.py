@@ -32,28 +32,35 @@ class Database:
         except sqlite3.OperationalError:
             raise QueryError
     
-    def execute_queries(self, queries, close_status = False):
+    def execute_queries(self, queries, 
+                        is_select = False, close_status = False):
         # This function execute some queries or saves them
         cursor = self.connect.cursor()
+        result_string = '' # result_string - final string with result of the query
         select_queries = ''
-        for select_word in SELECT_WORDS: # Scan of list of the select-words
-            if select_word in queries: # Finding select-word in all the queries
-                for word in str(queries).split(): # Dividing of the queries for the words
-                    if select_word in word: # Finding of one of the select words in word of 
-                                            # query
-                        select_queries += word+'\n'
-                        queries = queries.replace(word, '')
-                results = cursor.executescript(select_queries).fetchall()
-                result_string = '' # result_string - final string with result of the query
+        number = 1
+        if is_select:
+            for select_word in SELECT_WORDS: # Scan of list of the select-words
+                if select_word in queries: # Finding select-word in all the queries
+                    for word in str(queries).split(';'): # Dividing of the queries for the words
+                        if select_word in word: # Finding of one of the select words in word of 
+                                                # query
+                            select_queries += word+';'
+                            queries = queries.replace(word, '')
+
+            for select_query in select_queries.split(';'):     
+                results = cursor.execute(select_query + ';').fetchall()
+                result_string += f'------QUERY #{number}------\n'
                 for result_tuple in results:
                     for result_str in result_tuple:
-                        result_string += result_str+'\n'
-                return result_string
+                        result_string += str(result_str)+'\n'
+                number += 1
         else:
             cursor.executescript(queries)
             self.connect.commit()
             if close_status:
                 self.connect.close()
+        return result_string
 
 
     def migration_function(self, dbname, queries): # This function needs to 'copy' database queries

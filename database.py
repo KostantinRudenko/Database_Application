@@ -32,15 +32,17 @@ class Database:
         except sqlite3.OperationalError:
             raise QueryError
     
-    def execute_queries(self, queries, close_status = False): # This function execute some queries or saves them
+    def execute_queries(self, queries, close_status = False):
+        # This function execute some queries or saves them
         cursor = self.connect.cursor()
         select_queries = ''
-        for select_word in SELECT_WORDS:
-            if select_word in queries:
-                for elem in queries:
-                    if 'SELECT' in elem:
-                        select_queries += elem+'\n'
-                        str(queries).replace(elem, '')
+        for select_word in SELECT_WORDS: # Scan of list of the select-words
+            if select_word in queries: # Finding select-word in all the queries
+                for word in str(queries).split(): # Dividing of the queries for the words
+                    if select_word in word: # Finding of one of the select words in word of 
+                                            # query
+                        select_queries += word+'\n'
+                        queries = queries.replace(word, '')
                 results = cursor.executescript(select_queries).fetchall()
                 result_string = '' # result_string - final string with result of the query
                 for result_tuple in results:

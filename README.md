@@ -1,8 +1,6 @@
 # Database_Application
 # About project
-This is a project with using databases. If you want save some datas, you can use the application
-and save the datas in the database, that you can create in the applic-on. There is migration in the
-project.
+This is a project with using SQLite3 python library. If you want save some datas, you can use the application and save the datas in a database, that you can create with the app. You can also use migration function to copy databases.
 
 # Software environment
   ## Software (Programming & Modules)

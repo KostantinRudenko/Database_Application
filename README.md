@@ -1,13 +1,12 @@
 # Database_Application
 # About project
-This is a project with using databases. If you want save some datas, you can use the application
-and save the datas in the database, that you can create in the applic-on. There is migration in the
-project.
+Database Application is an application, which helps user to create a SQL object, using
+"friend-like" & simple environment.
 
 # Software environment
   ## Software (Programming & Modules)
   * Python
-  * SQLite3 (Downlaod)
+  * SQLite3 (Download)
   * Tkinter
   ## Operating system
   * **Windows 10**

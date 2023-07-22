@@ -65,4 +65,4 @@ class Database:
 
     def migration_function(self, dbname, queries): # This function needs to 'copy' database queries
         self.create_database(dbname)
-        self.execute_queries(dbname, queries)
+        self.execute_queries(queries)

@@ -27,8 +27,8 @@ def read_txt_file(file_name): # This function reads file
         file.close()
     return result
 
-def save_txt_file(data, file_name, mode = 'w'): # This func. saves results of SELECT-queries in a text file
-    with open(file_name + '.txt', mode) as file:
+def save_txt_file(data, file_name = SAVE_TXT_PATH, mode = 'w'): # This func. saves results of SELECT-queries in a text file
+    with open(file_name, mode) as file:
         file.write(data)
         file.close()
 

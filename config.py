@@ -53,7 +53,7 @@ PATH = 'Database_Application\\'
 SELECT_FILENAME = 'save'
 
 # Error values
-ERROR_VALUES = '!@#$%^&*()/-+*:;~'
+ERROR_VALUES = '!@#$%^&*()/-+*:;~?.<>,\|[]}{"`'
 
 # CMD values
 EDGE_PROMPT = f'cmd /c python "start msedge {HELP_LINK}"'

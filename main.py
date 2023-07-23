@@ -39,7 +39,7 @@ def open_query_window():
                     select_result = db.execute_queries(query, True)
                     if os.path.exists(SAVE_TXT_PATH):
                         rewrite_value = mb.askyesno(title='Question',
-                                                    message = 'Do you want to rewrite your changes')
+                                                    message = 'Do you want to rewrite your changes?')
                         if rewrite_value:
                             save_txt_file(select_result, SELECT_FILENAME)
                         else:

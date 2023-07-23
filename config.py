@@ -51,6 +51,7 @@ HELP_LINK = 'https://github.com/Sralker731/Database_Application/wiki'
 # File path & file names
 PATH = 'Database_Application\\'
 SELECT_FILENAME = 'save'
+SAVE_TXT_PATH = PATH + 'save.txt'
 
 # Error values
 ERROR_VALUES = '!@#$%^&*()/-+*:;~?.<>,\|[]}{"`'

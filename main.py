@@ -6,7 +6,7 @@ from exceptions import *
 from tkinter import *
 
 import tkinter.messagebox as mb
-import re
+import os
 
 window = Tk()
 
@@ -37,7 +37,13 @@ def open_query_window():
                 db.execute_queries(query)  
                 if 'SELECT' in query or 'select' in query or 'Select' in query:
                     select_result = db.execute_queries(query, True)
-                    save_txt_file(select_result, SELECT_FILENAME)
+                    if os.path.exists(SAVE_TXT_PATH):
+                        rewrite_value = mb.askyesno(title='Question',
+                                                    message = 'Do you want to rewrite your changes')
+                        if rewrite_value:
+                            save_txt_file(select_result, SELECT_FILENAME)
+                        else:
+                            save_txt_file(select_result, SELECT_FILENAME, 'a')
                     mb.showinfo(title='Save result',
                                 message = 'Result of the "SELECT" value was saved in the "save.txt" file!')
             if save_var.get() == 1:

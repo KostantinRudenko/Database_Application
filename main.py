@@ -16,40 +16,41 @@ window.title(TITLE)
 
 def open_query_window():
     def send_query(): # This function sends query to the database
-        message = mb.askyesno(title='Warning!',
-                            message='Are you sure, that you want to send this query?')
+        message = mb.askyesno(title=WARNING_TITLE,
+                              message='Are you sure, that you want to send this query?')
         if message:
             database_name = file_name_field.get(0.0, END).strip()
             query = query_field.get(0.0, END).strip()
             for error_value in ERROR_VALUES:
                 if error_value in database_name:
-                    mb.showerror(title = 'Error',
+                    mb.showerror(title = ERROR_TITLE,
                                  message = 'Database name consist incorrect values!')
                     raise IncorrectDbNameError
             if len(database_name) == 0 or len(query) == 0:
-                mb.showerror(title = 'Error',
+                mb.showerror(title = ERROR_TITLE,
                              message = 'Fields cannot be empty!')
             else:
                 db = Database(database_name) 
                 mb.showinfo(
-                            title='Result',
+                            title=INFO_TITLE,
                             message='Query was executed!')
                 db.execute_queries(query)  
                 if 'SELECT' in query or 'select' in query or 'Select' in query:
                     select_result = db.execute_queries(query, True)
-                    if os.path.exists(SAVE_TXT_PATH):
-                        rewrite_value = mb.askyesno(title='Question',
-                                                    message = 'Do you want to rewrite your changes?')
-                        if rewrite_value:
-                            save_txt_file(select_result, SELECT_FILENAME)
-                        else:
-                            save_txt_file(select_result, SELECT_FILENAME, 'a')
-                    mb.showinfo(title='Save result',
+                    mb.showwarning(title=WARNING_TITLE,
+                                   message=WARNING_MESSAGE)
+                    rewrite_value = mb.askyesno(title=QUESTION_TITLE,
+                                                message = 'Do you want to rewrite\save your changes?')
+                    if rewrite_value:
+                        write_txt_file(select_result, SELECT_FILENAME, WRITE)
+                    else:
+                        write_txt_file(select_result, SELECT_FILENAME, APPEND)
+                    mb.showinfo(title=INFO_TITLE,
                                 message = 'Result of the "SELECT" value was saved in the "save.txt" file!')
             if save_var.get() == 1:
                 query_filename = query_name_field.get(0.0, END).strip() + '.txt'
-                write_txt_file(query, query_filename)
-                mb.showinfo(title='Result',
+                write_txt_file(query, query_filename, WRITE)
+                mb.showinfo(title=INFO_TITLE,
                             message='Query was saved in the file!')
     alt_window = Toplevel()
     alt_window.geometry(f'{WINDOW_WIDTH}x{WINDOW_HEIGHT}')
@@ -83,7 +84,7 @@ def open_query_window():
     query_button = Button(alt_window,
                         width=BUTTON_WIDTH,
                         height=BUTTON_HEIGHT,
-                        text = 'Send!',
+                        text = SUBMIT,
                         command=send_query)
 
     widgets = [file_name_label,
@@ -99,18 +100,18 @@ def open_query_window():
 
 def open_simple_window():
     def send_query(): # This function sends query to the database
-        message = mb.askyesno(title='Warning!',
+        message = mb.askyesno(title=WARNING_TITLE,
                             message='Are you sure, that you want to send this query?')
         if message:
             database_name = database_field.get(0.0, END).strip()
             table_names_list = tables_field.get(0.0, END).replace(' ', '').strip().split(',')
             for error_value in ERROR_VALUES:
                 if error_value in database_name:
-                    mb.showerror(title = 'Error',
+                    mb.showerror(title = ERROR_TITLE,
                                  message = 'Database name consist incorrect values!')
                     raise IncorrectDbNameError
             if len(database_name) == 0 or len(table_names_list) == 0:
-                mb.showerror(title = 'Error',
+                mb.showerror(title = ERROR_TITLE,
                              message = 'Fields cannot be empty!')
             else:
                 db = Database(database_name)
@@ -122,13 +123,17 @@ def open_simple_window():
                 print(ddl)
                 db.execute_queries(ddl)
                     
-                mb.showinfo(title='Result',
+                mb.showinfo(title=INFO_TITLE,
                             message='Query was executed!')
                 if save_var.get() == 1:
-                    query_filename = query_name_field.get(0.0, END).strip() + '.txt'
-                    write_txt_file(ddl, query_filename)
-                    mb.showinfo(title='Result',
-                                message='Query was saved in the file!')
+                    query_filename = query_name_field.get(0.0, END).strip()
+                    if len(query_filename) == 0 or query_filename == '':
+                        mb.showerror(title = ERROR_TITLE,
+                                     message = 'file name cannot be empty!')
+                    else:
+                        write_txt_file(ddl, query_filename + '.txt', WRITE)
+                        mb.showinfo(title=INFO_TITLE,
+                                    message='Query was saved in the file!')
     simple_window = Toplevel()
     simple_window.geometry(f'{WINDOW_WIDTH}x{WINDOW_HEIGHT}')
     simple_window.resizable(RESIZABLE_WIDTH, RESIZABLE_HEIGHT)
@@ -159,7 +164,7 @@ def open_simple_window():
                        height=ENTRY_HEIGHT)
     
     submit_button = Button(simple_window,
-                           text='Submit!',
+                           text=SUBMIT,
                            width=BUTTON_WIDTH,
                            height=BUTTON_HEIGHT,
                            command=send_query)
@@ -173,7 +178,7 @@ def open_simple_window():
 
 def open_migration_window():
     def migrate():
-        ask = mb.askyesno(title='Question',
+        ask = mb.askyesno(title=QUESTION_TITLE,
                           message='Are you sure, that you want to migrate data?')
         try:
             if ask:
@@ -181,24 +186,24 @@ def open_migration_window():
                 file_name = file_name_field.get(0.0, END).strip()
                 for error_value in ERROR_VALUES:
                     if error_value in new_db_name or error_value in file_name:
-                        mb.showerror(title = 'Error',
+                        mb.showerror(title = ERROR_TITLE,
                                     message = 'Database name or file name consist incorrect values!')
                         raise IncorrectDbNameError
                 if len(new_db_name) == 0 or len(file_name) == 0:
-                    mb.showerror(title = 'Error',
+                    mb.showerror(title = ERROR_TITLE,
                                  message = 'Fields cannot be empty!')
                 else:
                     new_db = Database(new_db_name)
                     query = read_txt_file(file_name)
                     new_db.migration_function(new_db_name, query)
-                    mb.showinfo(title='Status',
+                    mb.showinfo(title=INFO_TITLE,
                                 message=f'Data was saved to the {new_db_name}.db database!')
         except:
-            mb.showerror(title='Error',
+            mb.showerror(title=ERROR_TITLE,
                          message='An error was occured, during the migration process.')
 
     mig_win = Toplevel()
-    mig_win.title('Migration')
+    mig_win.title(MIGRATION)
     mig_win.resizable(RESIZABLE_WIDTH, RESIZABLE_HEIGHT)
     mig_win.geometry(f'{WINDOW_WIDTH}x{WINDOW_HEIGHT // 2}')
     
@@ -220,7 +225,7 @@ def open_migration_window():
     start_button = Button(mig_win,
                           width=BUTTON_WIDTH,
                           height=BUTTON_HEIGHT,
-                          text='Migrate',
+                          text=MIGRATE,
                           command=migrate)
     widgets = [target_label, target_field,
                file_name_label, file_name_field,
@@ -237,7 +242,7 @@ empty_label1 = Label(width=LABEL_WIDTH,
 
 query_button = Button(width=BUTTON_WIDTH,
                      height=BUTTON_HEIGHT,
-                     text='Query Mode',
+                     text=QUERY_MODE,
                      command=open_query_window)
 
 empty_label2 = Label(width=LABEL_WIDTH,
@@ -245,7 +250,7 @@ empty_label2 = Label(width=LABEL_WIDTH,
 
 simple_button = Button(width=BUTTON_WIDTH,
                        height=BUTTON_HEIGHT,
-                       text='Simple Mode',
+                       text=SIMPLE_MODE,
                        command=open_simple_window)
 
 empty_label3 = Label(width=LABEL_WIDTH,
@@ -253,14 +258,14 @@ empty_label3 = Label(width=LABEL_WIDTH,
 
 migration_button = Button(width=BUTTON_WIDTH,
                           height=BUTTON_HEIGHT,
-                          text = 'Migration',
+                          text = MIGRATION,
                           command=open_migration_window)
 empty_label4 = Label(width=LABEL_WIDTH,
                      height=LABEL_HEIGHT)
 
 help_button = Button(width=BUTTON_WIDTH,
                      height=BUTTON_HEIGHT,
-                     text='Help',
+                     text=HELP,
                      command=open_help_link)
 
 widgets = [main_label, empty_label1,

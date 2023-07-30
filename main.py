@@ -34,18 +34,18 @@ def open_query_window():
                 mb.showinfo(
                             title='Result',
                             message='Query was executed!')
-                db.execute_queries(query)  
-                if 'SELECT' in query or 'select' in query or 'Select' in query:
-                    select_result = db.execute_queries(query, True)
-                    if os.path.exists(SAVE_TXT_PATH):
+                db.execute_queries(query)
+                for select_word in SELECT_WORDS:
+                    if select_word in query:
+                        select_result = db.execute_queries(query, True)
                         rewrite_value = mb.askyesno(title='Question',
                                                     message = 'Do you want to rewrite your changes?')
-                        if rewrite_value:
+                        if rewrite_value is True:
                             save_txt_file(select_result, SELECT_FILENAME)
                         else:
                             save_txt_file(select_result, SELECT_FILENAME, 'a')
-                    mb.showinfo(title='Save result',
-                                message = 'Result of the "SELECT" value was saved in the "save.txt" file!')
+                        mb.showinfo(title='Save result',
+                                    message = 'Result of the "SELECT" value was saved in the "save.txt" file!')
             if save_var.get() == 1:
                 query_filename = query_name_field.get(0.0, END).strip() + '.txt'
                 write_txt_file(query, query_filename)
@@ -119,7 +119,7 @@ def open_simple_window():
                 for table_name in table_names_list:
                     ddl += f'CREATE TABLE {table_name} (ID INTEGER);\n'
 
-                print(ddl)
+                
                 db.execute_queries(ddl)
                     
                 mb.showinfo(title='Result',

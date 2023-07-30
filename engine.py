@@ -10,15 +10,9 @@ def open_help_link():
     except:
         os.system(EDGE_PROMPT)
     
-def save_query(text_query): # This func. saves queries you have written
-    file_name = 'QUERIES_0.txt'
-    while os.path.exists(PATH + f'\\{file_name}'):
-        start_border = file_name.find('_') 
-        end_border = file_name.find('.')
-        number = int(file_name[start_border + 1:end_border]) 
-        file_name = file_name.replace(str(number), str(number + 1))
+def write_txt_file(text, file_name): # This func. saves queries you have written
     file = open(file_name, 'w')
-    file.write(text_query)
+    file.write(text)
     file.close()
 
 def read_txt_file(file_name): # This function reads file

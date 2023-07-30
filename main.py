@@ -47,7 +47,8 @@ def open_query_window():
                     mb.showinfo(title='Save result',
                                 message = 'Result of the "SELECT" value was saved in the "save.txt" file!')
             if save_var.get() == 1:
-                save_query(query)
+                query_filename = query_name_field.get(0.0, END).strip() + '.txt'
+                write_txt_file(query, query_filename)
                 mb.showinfo(title='Result',
                             message='Query was saved in the file!')
     alt_window = Toplevel()
@@ -75,6 +76,10 @@ def open_query_window():
     save_query_box = Checkbutton(alt_window, 
                                  text='Save query',
                                  variable = save_var)
+    query_name_field = Text(alt_window,
+                       width=ENTRY_WIDTH,
+                       height=ENTRY_HEIGHT)
+
     query_button = Button(alt_window,
                         width=BUTTON_WIDTH,
                         height=BUTTON_HEIGHT,
@@ -86,6 +91,7 @@ def open_query_window():
             query_label,
             query_field,
             save_query_box,
+            query_name_field,
             query_button]
 
     for widget in widgets:
@@ -98,7 +104,6 @@ def open_simple_window():
         if message:
             database_name = database_field.get(0.0, END).strip()
             table_names_list = tables_field.get(0.0, END).replace(' ', '').strip().split(',')
-            indexes_names_list = indexes_field.get(0.0, END).replace(' ', '').strip().split(',')
             for error_value in ERROR_VALUES:
                 if error_value in database_name:
                     mb.showerror(title = 'Error',
@@ -109,24 +114,19 @@ def open_simple_window():
                              message = 'Fields cannot be empty!')
             else:
                 db = Database(database_name)
-                index_status = True
-                if len(indexes_names_list) == 0 or '' in indexes_names_list:
-                    index_status = False
                 ddl = ''
 
                 for table_name in table_names_list:
                     ddl += f'CREATE TABLE {table_name} (ID INTEGER);\n'
 
-                if index_status:
-                    for index_name in indexes_names_list:
-                        ddl += f'CREATE INDEX {index_name} ON TABLE {table_name} (ID ASC);\n'
-
+                print(ddl)
                 db.execute_queries(ddl)
                     
                 mb.showinfo(title='Result',
                             message='Query was executed!')
                 if save_var.get() == 1:
-                    save_query(ddl)
+                    query_filename = query_name_field.get(0.0, END).strip() + '.txt'
+                    write_txt_file(ddl, query_filename)
                     mb.showinfo(title='Result',
                                 message='Query was saved in the file!')
     simple_window = Toplevel()
@@ -147,18 +147,16 @@ def open_simple_window():
     tables_field = Text(simple_window, 
                          width=SIMPLE_MODE_TEXT_WIDTH,
                          height=SIMPLE_MODE_TEXT_HEIGHT)
-
-    indexes_label = Label(simple_window,
-                          text='Enter your indexes below:')
-    indexes_field = Text(simple_window,
-                        width=SIMPLE_MODE_TEXT_WIDTH,
-                        height=SIMPLE_MODE_TEXT_HEIGHT)
     
     save_var = IntVar()
 
     save_query_box = Checkbutton(simple_window, 
                                  text='Save query',
                                  variable = save_var)
+    
+    query_name_field = Text(simple_window,
+                       width=ENTRY_WIDTH,
+                       height=ENTRY_HEIGHT)
     
     submit_button = Button(simple_window,
                            text='Submit!',
@@ -168,8 +166,7 @@ def open_simple_window():
     
     widgets = [database_label, database_field,
                tables_label, tables_field,
-               indexes_label, indexes_field,
-               save_query_box, submit_button]
+               save_query_box, query_name_field, submit_button]
     
     for widget in widgets:
         widget.pack()

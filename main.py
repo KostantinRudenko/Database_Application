@@ -40,7 +40,7 @@ def open_query_window():
                     mb.showwarning(title=WARNING_TITLE,
                                    message=WARNING_MESSAGE)
                     rewrite_value = mb.askyesno(title=QUESTION_TITLE,
-                                                message = 'Do you want to rewrite\save your changes?')
+                                                message = 'Do you want to rewrite your changes?')
                     if rewrite_value:
                         write_txt_file(select_result, SELECT_FILENAME, WRITE)
                     else:

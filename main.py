@@ -37,8 +37,8 @@ def open_query_window():
                 db.execute_queries(query)  
                 if 'SELECT' in query or 'select' in query or 'Select' in query:
                     select_result = db.execute_queries(query, True)
-                    mb.showwarning(title=WARNING_TITLE,
-                                   message=WARNING_MESSAGE)
+                    mb.showinfo(title=WARNING_TITLE,
+                                message=WARNING_MESSAGE)
                     rewrite_value = mb.askyesno(title=QUESTION_TITLE,
                                                 message = 'Do you want to rewrite your changes?')
                     if rewrite_value:

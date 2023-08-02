@@ -37,7 +37,13 @@ def open_query_window():
                 db.execute_queries(query)  
                 if 'SELECT' in query or 'select' in query or 'Select' in query:
                     select_result = db.execute_queries(query, True)
-                    write_txt_file(select_result, SELECT_FILENAME)
+                    rewriting_ask = mb.askyesno(
+                                                title='Warning massage',
+                                                message=WARNING_MESSAGE)
+                    if rewriting_ask:
+                        write_txt_file(select_result, SELECT_FILENAME)
+                    else:
+                        write_txt_file(select_result, SELECT_FILENAME, APPEND)
                     mb.showinfo(title='Save result',
                                 message = 'Result of the "SELECT" value was saved in the "save.txt" file!')
             if save_var.get() == 1:

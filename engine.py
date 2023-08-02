@@ -10,21 +10,16 @@ def open_help_link():
     except:
         os.system(EDGE_PROMPT)
     
-def write_txt_file(text, file_name): # This func. saves queries you have written
-    file = open(file_name, 'w')
+def write_txt_file(text, file_name, mode = 'w'): # This func. saves queries you have written
+    file = open(file_name, mode)
     file.write(text)
     file.close()
 
 def read_txt_file(file_name): # This function reads file
-    with open(file_name +'.txt', 'r') as file:
+    with open(file_name +'.txt', READ_ONLY) as file:
         result = file.read()
         file.close()
     return result
-
-def save_txt_file(data, file_name = SAVE_TXT_PATH, mode = 'w'): # This func. saves results of SELECT-queries in a text file
-    with open(file_name, mode) as file:
-        file.write(data)
-        file.close()
 
 def find_select_stmt(query):
     select_values = query.upper()

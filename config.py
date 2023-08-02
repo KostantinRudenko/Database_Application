@@ -38,6 +38,21 @@ RESIZABLE_WIDTH = False
 RESIZABLE_HEIGHT = False
 
 TITLE = 'Database Application V.1.0.0'
+MIGRATION = 'Migration'
+SIMPLE_MODE = 'Simple Mode'
+QUERY_MODE = 'Query Mode'
+HELP = 'Help'
+MIGRATE = 'Migrate'
+SUBMIT = 'Submit!'
+
+WARNING_TITLE = 'Warning!'
+WARNING_MESSAGE = 'If you press "YES" in the next field - data will be rewritten. Otherwise, data will be saved in the save.txt file and appended below. Watch carefully!'
+
+ERROR_TITLE = 'Error'
+
+QUESTION_TITLE = 'Question'
+
+INFO_TITLE = 'Result'
 
 # Regular expression values
 REGEX_QUERY = r'[A-Za-z0-9\w\s|*]+;'
@@ -62,3 +77,8 @@ WEBBROWSER_PROMPT = f'cmd /c "python -m webbrowser -t "{HELP_LINK}""'
 
 # Query command words
 SELECT_WORDS = ['SELECT', 'Select', 'select']
+
+# File modes
+READ_ONLY = 'r'
+WRITE = 'w'
+APPEND = 'a'

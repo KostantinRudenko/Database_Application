@@ -2,10 +2,11 @@
 # About project
 This is a project with using SQLite3 python library. If you want save some datas, you can use the application and save the datas in a database, that you can create with the app. You can also use migration function to copy databases.
 
+
 # Software environment
   ## Software (Programming & Modules)
   * Python
-  * SQLite3 (Downlaod)
+  * SQLite3 (Download)
   * Tkinter
   ## Operating system
   * **Windows 10**

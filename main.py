@@ -38,10 +38,10 @@ def open_query_window():
                 if 'SELECT' in query or 'select' in query or 'Select' in query:
                     select_result = db.execute_queries(query, True)
                     rewriting_ask = mb.askyesno(
-                                                title='Warning massage',
+                                                title=WARNING_TITLE,
                                                 message=WARNING_MESSAGE)
                     if rewriting_ask:
-                        write_txt_file(select_result, SELECT_FILENAME)
+                        write_txt_file(select_result, SELECT_FILENAME, True)
                     else:
                         write_txt_file(select_result, SELECT_FILENAME, APPEND)
                     mb.showinfo(title='Save result',

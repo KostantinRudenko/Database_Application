@@ -37,23 +37,29 @@ class Database:
         # This function execute some queries or saves them
         cursor = self.connect.cursor()
         result_string = '' # result_string - final string with result of the query
-        select_queries = ''
+        all_select_queries = ''
         number = 1
-        if is_select:
-            for select_word in SELECT_WORDS: # Scan of list of the select-words
-                if select_word in queries: # Finding select-word in all the queries
-                    for word in str(queries).split(';'): # Dividing of the queries for the words
-                        if select_word in word: # Finding of one of the select words in word of 
-                                                # query
-                            select_queries += word+';'
-                            queries = queries.replace(word, '')
+        try:
+            with open('save', 'r') as file:
+                file_text = file.read()
+                query_result_header = re.findall(SELECT_RESULT, file_text)
+                query_number = re.findall(NUMBER_REGEX, query_result_header[-1])
+                number = int(query_number[-1]) + 1
 
-            for select_query in select_queries.split(';'):     
-                results = cursor.execute(select_query + ';').fetchall()
+        except FileNotFoundError or AttributeError:
+            pass
+
+        if is_select:
+            select_queries = re.findall(SELECT_QUERY, queries)
+            for select_query in select_queries:
+                all_select_queries += select_query+'\n'
+                queries = queries.replace(select_query, '')
+
+            for select_query in select_queries: 
+                results = cursor.execute(select_query).fetchall()
                 result_string += f'------QUERY #{number}------\n'
                 for result_tuple in results:
-                    for result_str in result_tuple:
-                        result_string += str(result_str)+'\n'
+                    result_string += str(result_tuple)+'\n'
                 number += 1
         else:
             cursor.executescript(queries)

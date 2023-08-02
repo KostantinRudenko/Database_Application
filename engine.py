@@ -10,7 +10,7 @@ def open_help_link():
     except:
         os.system(EDGE_PROMPT)
     
-def write_txt_file(text, file_name, mode = 'w'): # This func. saves queries you have written
+def write_txt_file(text, file_name, mode = 'w', rewrite_status = False): # This func. saves queries you have written
     file = open(file_name, mode)
     file.write(text)
     file.close()

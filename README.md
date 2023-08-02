@@ -5,7 +5,7 @@ This is a project with using SQLite3 python library. If you want save some datas
 # Software environment
   ## Software (Programming & Modules)
   * Python
-  * SQLite3 (Downlaod)
+  * SQLite3 (Download)
   * Tkinter
   ## Operating system
   * **Windows 10**

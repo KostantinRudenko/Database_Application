@@ -57,7 +57,8 @@ INFO_TITLE = 'Result'
 # Regular expression values
 REGEX_QUERY = r'[A-Za-z0-9\w\s|*]+;'
 TABLE_NAME_QUERY=r'Table|table|TABLE\s[a-zA-Z0-9]+'
-SELECT_QUERY = r"[SELECTselectSelect]+\w|\W+ [fromFromFROM]+ +[A-Za-z0-9]+;|[SELECTselectSelect]+\w|\W+ [fromFromFROM]+ +[A-Za-z0-9]+ +[whereWhereWHERE]+[\w\W]+;"
+SELECT_QUERY = r"(select[^;]+;|Select[^;]+;|SELECT[^;]+;)"
+QUERY_FIELD_REGEX = r"#[0-9]"
 
 # Browser values
 BROWSERS = ['chrome', 'firefox', 'opera', 'safari']
@@ -82,3 +83,6 @@ SELECT_WORDS = ['SELECT', 'Select', 'select']
 READ_ONLY = 'r'
 WRITE = 'w'
 APPEND = 'a'
+
+# Time save formats
+TIME_FORMAT = "%Y-%m-%d-%H.%M.%S"

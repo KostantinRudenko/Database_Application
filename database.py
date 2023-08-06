@@ -5,6 +5,7 @@ from engine import *
 import re
 import os
 import sqlite3
+import datetime
 
 
 class Database:
@@ -37,24 +38,21 @@ class Database:
         # This function execute some queries or saves them
         cursor = self.connect.cursor()
         result_string = '' # result_string - final string with result of the query
-        select_queries = ''
-        number = 1
+        all_select_queries = ''
         if is_select:
-            for select_word in SELECT_WORDS: # Scan of list of the select-words
-                if select_word in queries: # Finding select-word in all the queries
-                    for word in str(queries).split(';'): # Dividing of the queries for the words
-                        if select_word in word: # Finding of one of the select words in word of 
-                                                # query
-                            select_queries += word+';'
-                            queries = queries.replace(word, '')
+            select_queries = re.findall(SELECT_QUERY, queries)
+            for select_query in select_queries:
+                all_select_queries += select_query+'\n'
+                queries = queries.replace(select_query, '')
 
-            for select_query in select_queries.split(';'):     
-                results = cursor.execute(select_query + ';').fetchall()
-                result_string += f'------QUERY #{number}------\n'
+            for select_query in select_queries: 
+                current_date = datetime.datetime.today()
+                current_date = current_date.strftime(TIME_FORMAT)    
+                results = cursor.execute(select_query).fetchall()
+                result_string += f'------RESULT FOR THE {current_date}------\n'
                 for result_tuple in results:
                     for result_str in result_tuple:
-                        result_string += str(result_str)+'\n'
-                number += 1
+                        result_string += str(result_str)+'\n'      
         else:
             cursor.executescript(queries)
             self.connect.commit()

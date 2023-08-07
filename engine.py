@@ -1,5 +1,6 @@
 import webbrowser
 import os
+import re
 
 from config import *
 
@@ -9,20 +10,21 @@ def open_help_link():
     except:
         os.system(EDGE_PROMPT)
     
-def save_query(text_query):
-    file_name = 'QUERIES_0.txt'
-    while os.path.exists(PATH + f'\\{file_name}'):
-        start_border = file_name.find('_') 
-        end_border = file_name.find('.')
-        number = int(file_name[start_border + 1:end_border]) 
-        file_name = file_name.replace(str(number), str(number + 1))
-    file = open(file_name, 'w')
-    file.write(text_query)
+def write_txt_file(text, file_name, mode = 'w'): # This func. saves queries you have written
+    file = open(file_name, mode)
+    file.write(text)
     file.close()
-    return file_name
 
 def read_txt_file(file_name): # This function reads file
-    with open(file_name +'.txt', 'r') as file:
+    with open(file_name +'.txt', READ_ONLY) as file:
         result = file.read()
         file.close()
     return result
+
+def find_select_stmt(query):
+    select_values = query.upper()
+    select_result = ''
+    for value in select_values.split('\n'):
+        if 'SELECT' in value:
+            select_result += value
+    return select_result
